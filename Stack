@@ -1,0 +1,158 @@
+class Solution {
+public:
+   void reorderList(ListNode* head) 
+   {
+        if(!head or !head->next) 
+        return;
+        stack<ListNode*> stk;
+        auto it = head, first = head, second = first->next;
+        while(it) 
+        {
+            stk.push(it);
+            it = it->next;
+        }
+        int maxPops = stk.size()/2;
+        while(maxPops--) 
+        {
+            auto top = stk.top(); stk.pop();
+            first->next = top;
+            top->next = second;
+            first = second;
+            second = second->next;
+        }
+        first->next = NULL;
+    }
+};
+
+
+#REVERSE A STRING USING STACK
+
+char* reverse(char *S, int len)
+{
+    stack<char>str;
+    for(int i=0;i<len;i++)
+    {
+        str.push(S[i]);
+    }
+    int j=0;
+    while(!str.empty())
+    {
+        S[j]=str.top();
+        j++;
+        str.pop();
+    }
+    return S;
+}
+
+
+#VALID PARENTHESES
+
+class Solution {
+public:
+    bool isValid(string s) 
+    {
+        stack<char> str;
+        for(auto i:s)
+        {
+            if(i=='(' or i=='{' or i=='[') 
+            str.push(i);  
+            else 
+            {
+                if(str.empty() or (str.top()=='(' and i!=')') or (str.top()=='{' and i!='}') or (str.top()=='[' and i!=']')) 
+                return false;
+                str.pop();
+            }
+        }
+        return str.empty();
+    }
+};
+
+
+#SCORE OF PARENTHESES
+
+class Solution {
+public:
+    int scoreOfParentheses(string s) 
+    {
+        stack<int>str;
+        int score=0;
+        for(int i=0;i<s.size();i++)
+        {
+            if(s[i]=='(')
+            {
+                str.push(score);
+                score=0;
+            }
+            else if(s[i]==')')
+            {
+                score=str.top()+max(2*score,1);
+                str.pop();
+            }
+        }
+        return score;
+    }
+};
+
+
+#NEXT GREATER ELEMENT
+
+vector<long long>v;
+       stack<long long>s;
+       for(int i=n-1;i>=0;i--)
+       {
+           if(s.size()==0)
+           {
+               v.push_back(-1);
+           }
+           else if(s.size()>0 && s.top()>arr[i])
+           {
+               v.push_back(s.top());
+           }
+           else if(s.size()>0 && s.top()<=arr[i])
+           {
+               while(s.size()>0 && s.top()<=arr[i])
+               {
+                   s.pop();
+               }
+               if(s.size()==0)
+               {
+                   v.push_back(-1);
+               }
+               else{
+                   v.push_back(s.top());
+               }
+           }
+           s.push(arr[i]);
+       }
+       reverse(v.begin(),v.end());
+       return v;
+       }
+       };
+       
+       
+#REMOVE DUPLICATE LETTERS
+
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+    vector<int> cand(256,0);
+    vector<bool> visited(256,false);
+    for (char c : s)
+        cand[c]++;
+    string result = "0";
+    for (char c : s) 
+    {
+        cand[c]--;
+        if (visited[c]) 
+        continue;
+        while(c<result.back() && cand[result.back()]) 
+        {
+            visited[result.back()] = false;
+            result.pop_back();
+        }
+        result += c;
+        visited[c] = true;
+    }
+    return result.substr(1);
+}
+};
